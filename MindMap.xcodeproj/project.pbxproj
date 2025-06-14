@@ -7,12 +7,21 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		AB4577DD2740972E00E7F889 /* MindMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = MindMap.app; path = "/Users/lithalean/Documents/Developer/3_Build/Github/MindMap/build/Debug-iphoneos/MindMap.app"; sourceTree = "<absolute>"; };
+		DFCAB2CD2DFD516900CCA0D8 /* MindMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MindMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		DF7D68BE2DFD5E6F00EA4A59 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = AB4577DC2740972E00E7F889 /* MindMap */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		DFCAB2982DFD4CA800CCA0D8 /* Models */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Models; sourceTree = "<group>"; };
-		DFCAB2B12DFD4D9200CCA0D8 /* MindMap */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = MindMap; sourceTree = "<group>"; };
+		DFCAB2B12DFD4D9200CCA0D8 /* MindMap */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (DF7D68BE2DFD5E6F00EA4A59 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = MindMap; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,8 +38,8 @@
 		AB4577D42740972E00E7F889 = {
 			isa = PBXGroup;
 			children = (
-				DFCAB2982DFD4CA800CCA0D8 /* Models */,
 				DFCAB2B12DFD4D9200CCA0D8 /* MindMap */,
+				DFCAB2CD2DFD516900CCA0D8 /* MindMap.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -54,7 +63,7 @@
 			);
 			name = MindMap;
 			productName = "mindmap-swiftui";
-			productReference = AB4577DD2740972E00E7F889 /* MindMap.app */;
+			productReference = DFCAB2CD2DFD516900CCA0D8 /* MindMap.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -236,16 +245,17 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"mindmap-swiftui/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"MindMap/Preview Content\"";
 				DEVELOPMENT_TEAM = FP8G6F5Q64;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "mindmap-swiftui/Info.plist";
+				INFOPLIST_FILE = MindMap/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Mindmap;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -266,16 +276,17 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"mindmap-swiftui/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"MindMap/Preview Content\"";
 				DEVELOPMENT_TEAM = FP8G6F5Q64;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "mindmap-swiftui/Info.plist";
+				INFOPLIST_FILE = MindMap/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Mindmap;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
