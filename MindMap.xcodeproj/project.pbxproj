@@ -1,0 +1,454 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AB4577E12740972E00E7F889 /* mindmap_swiftuiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4577E02740972E00E7F889 /* mindmap_swiftuiApp.swift */; };
+		AB4577E52740973200E7F889 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB4577E42740973200E7F889 /* Assets.xcassets */; };
+		AB4577E82740973200E7F889 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB4577E72740973200E7F889 /* Preview Assets.xcassets */; };
+		AB45781A27412FBE00E7F889 /* Mesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB45780C27412FBE00E7F889 /* Mesh.swift */; };
+		AB45781B27412FBE00E7F889 /* SelectionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB45780D27412FBE00E7F889 /* SelectionHandler.swift */; };
+		AB45781C27412FBE00E7F889 /* Edge.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB45780E27412FBE00E7F889 /* Edge.swift */; };
+		AB45781D27412FBE00E7F889 /* Mesh+Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB45780F27412FBE00E7F889 /* Mesh+Demo.swift */; };
+		AB45781E27412FBE00E7F889 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB45781027412FBE00E7F889 /* Node.swift */; };
+		AB45781F27412FBE00E7F889 /* Mesh+MathHelp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB45781127412FBE00E7F889 /* Mesh+MathHelp.swift */; };
+		AB45782027412FBE00E7F889 /* EdgeMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB45781327412FBE00E7F889 /* EdgeMapView.swift */; };
+		AB45782127412FBE00E7F889 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB45781427412FBE00E7F889 /* MapView.swift */; };
+		AB45782227412FBE00E7F889 /* EdgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB45781527412FBE00E7F889 /* EdgeView.swift */; };
+		AB45782327412FBE00E7F889 /* NodeMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB45781627412FBE00E7F889 /* NodeMapView.swift */; };
+		AB45782427412FBE00E7F889 /* SurfaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB45781727412FBE00E7F889 /* SurfaceView.swift */; };
+		AB45782527412FBE00E7F889 /* NodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB45781827412FBE00E7F889 /* NodeView.swift */; };
+		AB45782627412FBE00E7F889 /* BoringListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB45781927412FBE00E7F889 /* BoringListView.swift */; };
+		AB4578292741303200E7F889 /* CGPoint+Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4578282741303200E7F889 /* CGPoint+Help.swift */; };
+		AB4DCB5B2741A078000AB777 /* FilesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4DCB5A2741A078000AB777 /* FilesListView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		AB4577DD2740972E00E7F889 /* MindMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MindMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB4577E02740972E00E7F889 /* mindmap_swiftuiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mindmap_swiftuiApp.swift; sourceTree = "<group>"; };
+		AB4577E42740973200E7F889 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AB4577E72740973200E7F889 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		AB4577F12740973200E7F889 /* mindmap_swiftuiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mindmap_swiftuiTests.swift; sourceTree = "<group>"; };
+		AB4577FB2740973200E7F889 /* mindmap_swiftuiUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mindmap_swiftuiUITests.swift; sourceTree = "<group>"; };
+		AB4577FD2740973200E7F889 /* mindmap_swiftuiUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mindmap_swiftuiUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		AB45780A27412F6D00E7F889 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		AB45780C27412FBE00E7F889 /* Mesh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mesh.swift; sourceTree = "<group>"; };
+		AB45780D27412FBE00E7F889 /* SelectionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionHandler.swift; sourceTree = "<group>"; };
+		AB45780E27412FBE00E7F889 /* Edge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Edge.swift; sourceTree = "<group>"; };
+		AB45780F27412FBE00E7F889 /* Mesh+Demo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mesh+Demo.swift"; sourceTree = "<group>"; };
+		AB45781027412FBE00E7F889 /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
+		AB45781127412FBE00E7F889 /* Mesh+MathHelp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mesh+MathHelp.swift"; sourceTree = "<group>"; };
+		AB45781327412FBE00E7F889 /* EdgeMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeMapView.swift; sourceTree = "<group>"; };
+		AB45781427412FBE00E7F889 /* MapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		AB45781527412FBE00E7F889 /* EdgeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeView.swift; sourceTree = "<group>"; };
+		AB45781627412FBE00E7F889 /* NodeMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeMapView.swift; sourceTree = "<group>"; };
+		AB45781727412FBE00E7F889 /* SurfaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurfaceView.swift; sourceTree = "<group>"; };
+		AB45781827412FBE00E7F889 /* NodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeView.swift; sourceTree = "<group>"; };
+		AB45781927412FBE00E7F889 /* BoringListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoringListView.swift; sourceTree = "<group>"; };
+		AB4578282741303200E7F889 /* CGPoint+Help.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Help.swift"; sourceTree = "<group>"; };
+		AB4DCB5A2741A078000AB777 /* FilesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesListView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AB4577DA2740972E00E7F889 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AB4577D42740972E00E7F889 = {
+			isa = PBXGroup;
+			children = (
+				AB4577DF2740972E00E7F889 /* mindmap-swiftui */,
+				AB4577F02740973200E7F889 /* mindmap-swiftuiTests */,
+				AB4577FA2740973200E7F889 /* mindmap-swiftuiUITests */,
+				AB4577DE2740972E00E7F889 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AB4577DE2740972E00E7F889 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AB4577DD2740972E00E7F889 /* MindMap.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AB4577DF2740972E00E7F889 /* mindmap-swiftui */ = {
+			isa = PBXGroup;
+			children = (
+				AB45780A27412F6D00E7F889 /* Info.plist */,
+				AB4577E02740972E00E7F889 /* mindmap_swiftuiApp.swift */,
+				AB4DCB5A2741A078000AB777 /* FilesListView.swift */,
+				AB4577E42740973200E7F889 /* Assets.xcassets */,
+				AB4578272741303200E7F889 /* Help */,
+				AB45780B27412FBE00E7F889 /* Model */,
+				AB45781227412FBE00E7F889 /* View Stack */,
+				AB4577E62740973200E7F889 /* Preview Content */,
+			);
+			path = "mindmap-swiftui";
+			sourceTree = "<group>";
+		};
+		AB4577E62740973200E7F889 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				AB4577E72740973200E7F889 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		AB4577F02740973200E7F889 /* mindmap-swiftuiTests */ = {
+			isa = PBXGroup;
+			children = (
+				AB4577F12740973200E7F889 /* mindmap_swiftuiTests.swift */,
+			);
+			path = "mindmap-swiftuiTests";
+			sourceTree = "<group>";
+		};
+		AB4577FA2740973200E7F889 /* mindmap-swiftuiUITests */ = {
+			isa = PBXGroup;
+			children = (
+				AB4577FB2740973200E7F889 /* mindmap_swiftuiUITests.swift */,
+				AB4577FD2740973200E7F889 /* mindmap_swiftuiUITestsLaunchTests.swift */,
+			);
+			path = "mindmap-swiftuiUITests";
+			sourceTree = "<group>";
+		};
+		AB45780B27412FBE00E7F889 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				AB45780C27412FBE00E7F889 /* Mesh.swift */,
+				AB45780D27412FBE00E7F889 /* SelectionHandler.swift */,
+				AB45780E27412FBE00E7F889 /* Edge.swift */,
+				AB45780F27412FBE00E7F889 /* Mesh+Demo.swift */,
+				AB45781027412FBE00E7F889 /* Node.swift */,
+				AB45781127412FBE00E7F889 /* Mesh+MathHelp.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		AB45781227412FBE00E7F889 /* View Stack */ = {
+			isa = PBXGroup;
+			children = (
+				AB45781327412FBE00E7F889 /* EdgeMapView.swift */,
+				AB45781427412FBE00E7F889 /* MapView.swift */,
+				AB45781527412FBE00E7F889 /* EdgeView.swift */,
+				AB45781627412FBE00E7F889 /* NodeMapView.swift */,
+				AB45781727412FBE00E7F889 /* SurfaceView.swift */,
+				AB45781827412FBE00E7F889 /* NodeView.swift */,
+				AB45781927412FBE00E7F889 /* BoringListView.swift */,
+			);
+			path = "View Stack";
+			sourceTree = "<group>";
+		};
+		AB4578272741303200E7F889 /* Help */ = {
+			isa = PBXGroup;
+			children = (
+				AB4578282741303200E7F889 /* CGPoint+Help.swift */,
+			);
+			path = Help;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AB4577DC2740972E00E7F889 /* MindMap */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AB4578012740973200E7F889 /* Build configuration list for PBXNativeTarget "MindMap" */;
+			buildPhases = (
+				AB4577D92740972E00E7F889 /* Sources */,
+				AB4577DA2740972E00E7F889 /* Frameworks */,
+				AB4577DB2740972E00E7F889 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MindMap;
+			productName = "mindmap-swiftui";
+			productReference = AB4577DD2740972E00E7F889 /* MindMap.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AB4577D52740972E00E7F889 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1310;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					AB4577DC2740972E00E7F889 = {
+						CreatedOnToolsVersion = 13.1;
+					};
+				};
+			};
+			buildConfigurationList = AB4577D82740972E00E7F889 /* Build configuration list for PBXProject "MindMap" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AB4577D42740972E00E7F889;
+			productRefGroup = AB4577DE2740972E00E7F889 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AB4577DC2740972E00E7F889 /* MindMap */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AB4577DB2740972E00E7F889 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AB4577E82740973200E7F889 /* Preview Assets.xcassets in Resources */,
+				AB4577E52740973200E7F889 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AB4577D92740972E00E7F889 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AB45781A27412FBE00E7F889 /* Mesh.swift in Sources */,
+				AB45782227412FBE00E7F889 /* EdgeView.swift in Sources */,
+				AB4578292741303200E7F889 /* CGPoint+Help.swift in Sources */,
+				AB45782427412FBE00E7F889 /* SurfaceView.swift in Sources */,
+				AB45782027412FBE00E7F889 /* EdgeMapView.swift in Sources */,
+				AB45781F27412FBE00E7F889 /* Mesh+MathHelp.swift in Sources */,
+				AB45781B27412FBE00E7F889 /* SelectionHandler.swift in Sources */,
+				AB45781D27412FBE00E7F889 /* Mesh+Demo.swift in Sources */,
+				AB4DCB5B2741A078000AB777 /* FilesListView.swift in Sources */,
+				AB45781C27412FBE00E7F889 /* Edge.swift in Sources */,
+				AB45782127412FBE00E7F889 /* MapView.swift in Sources */,
+				AB45782627412FBE00E7F889 /* BoringListView.swift in Sources */,
+				AB4577E12740972E00E7F889 /* mindmap_swiftuiApp.swift in Sources */,
+				AB45781E27412FBE00E7F889 /* Node.swift in Sources */,
+				AB45782527412FBE00E7F889 /* NodeView.swift in Sources */,
+				AB45782327412FBE00E7F889 /* NodeMapView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		AB4577FF2740973200E7F889 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AB4578002740973200E7F889 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AB4578022740973200E7F889 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"mindmap-swiftui/Preview Content\"";
+				DEVELOPMENT_TEAM = FP8G6F5Q64;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "mindmap-swiftui/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Mindmap;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nomadateliers.mindmap;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		AB4578032740973200E7F889 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"mindmap-swiftui/Preview Content\"";
+				DEVELOPMENT_TEAM = FP8G6F5Q64;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "mindmap-swiftui/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Mindmap;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nomadateliers.mindmap;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AB4577D82740972E00E7F889 /* Build configuration list for PBXProject "MindMap" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AB4577FF2740973200E7F889 /* Debug */,
+				AB4578002740973200E7F889 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AB4578012740973200E7F889 /* Build configuration list for PBXNativeTarget "MindMap" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AB4578022740973200E7F889 /* Debug */,
+				AB4578032740973200E7F889 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AB4577D52740972E00E7F889 /* Project object */;
+}
