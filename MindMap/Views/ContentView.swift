@@ -1,43 +1,83 @@
 import SwiftUI
 
-// MARK: - Main Content View (Adaptive Container)
 struct ContentView: View {
     @Bindable var document: MindMapDocument
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @Environment(\.verticalSizeClass) private var verticalSizeClass
-    @State private var selectedTab: NavigationTab = .mindmaps
-    @State private var sidebarVisible = true
     @State private var showingCanvasView = false
+    
+    var isMacCatalyst: Bool {
+        #if targetEnvironment(macCatalyst)
+        return true
+        #else
+        return false
+        #endif
+    }
     
     var body: some View {
         GeometryReader { geometry in
             if showingCanvasView {
-                // Full Canvas Mode
-                AdaptiveMindMapCanvasView(document: document)
+                // Full Canvas Mode with Mac Catalyst adjustments
+                MindMapCanvasView(document: document)
                     .background(.black)
                     .preferredColorScheme(.dark)
-                    .navigationBarHidden(true)
+                    .overlay(alignment: .topLeading) {
+                        // Back button with Mac-appropriate styling
+                        Button(action: { showingCanvasView = false }) {
+                            HStack(spacing: 8) {
+                                Image(systemName: "chevron.left")
+                                    .font(isMacCatalyst ? .body : .title2)
+                                
+                                if isMacCatalyst {
+                                    Text("Back")
+                                        .font(.body)
+                                }
+                            }
+                            .foregroundColor(.white)
+                            .padding(isMacCatalyst ? 8 : 12)
+                            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: isMacCatalyst ? 8 : 12))
+                        }
+                        .padding(isMacCatalyst ? 16 : 20)
+                    }
+                    .overlay(alignment: .topTrailing) {
+                        // Add node button with Mac-appropriate styling
+                        Button(action: addNodeAtCenter) {
+                            HStack(spacing: 8) {
+                                Image(systemName: "plus")
+                                    .font(isMacCatalyst ? .body : .title2)
+                                
+                                if isMacCatalyst {
+                                    Text("Add Node")
+                                        .font(.body)
+                                }
+                            }
+                            .foregroundColor(.white)
+                            .padding(isMacCatalyst ? 8 : 12)
+                            .background(.blue, in: RoundedRectangle(cornerRadius: isMacCatalyst ? 8 : 12))
+                        }
+                        .padding(isMacCatalyst ? 16 : 20)
+                    }
+                    .overlay(alignment: .top) {
+                        // Mac-style toolbar when running on Mac
+                        if isMacCatalyst {
+                            MacCatalystToolbar(document: document)
+                                .padding(.top, 8)
+                        }
+                    }
             } else {
-                // Document Browser Mode
+                // Document Browser Mode with platform-appropriate layout
                 if shouldShowSidebar(for: geometry.size) {
-                    SidebarLayout(
-                        selectedTab: $selectedTab,
-                        sidebarVisible: $sidebarVisible,
-                        document: document,
-                        onOpenCanvas: { showingCanvasView = true }
-                    )
+                    NavigationSplitView {
+                        MacCatalystSidebar(onOpenCanvas: { showingCanvasView = true })
+                            .navigationSplitViewColumnWidth(min: 250, ideal: 280, max: 320)
+                    } detail: {
+                        DocumentBrowserView(document: document, onOpenCanvas: { showingCanvasView = true })
+                            .navigationBarHidden(isMacCatalyst)
+                    }
                 } else {
-                    TabBarLayout(
-                        selectedTab: $selectedTab,
-                        document: document,
-                        onOpenCanvas: { showingCanvasView = true }
-                    )
+                    DocumentBrowserView(document: document, onOpenCanvas: { showingCanvasView = true })
                 }
             }
         }
-        .animation(.easeInOut(duration: 0.3), value: horizontalSizeClass)
         .onAppear {
-            // If document has content, show canvas immediately
             if !document.nodes.isEmpty {
                 showingCanvasView = true
             }
@@ -45,546 +85,18 @@ struct ContentView: View {
     }
     
     private func shouldShowSidebar(for size: CGSize) -> Bool {
-        // iPad landscape or macOS
-        return size.width > 768 && size.height < size.width * 1.2
-    }
-}
-
-// MARK: - Sidebar Layout (Landscape/macOS)
-struct SidebarLayout: View {
-    @Binding var selectedTab: NavigationTab
-    @Binding var sidebarVisible: Bool
-    let document: MindMapDocument
-    let onOpenCanvas: () -> Void
-    
-    var body: some View {
-        NavigationSplitView(columnVisibility: .constant(.all)) {
-            FloatingSidebar(selectedTab: $selectedTab, sidebarVisible: $sidebarVisible)
-                .navigationSplitViewColumnWidth(min: 250, ideal: 280, max: 320)
-        } detail: {
-            MainContentArea(
-                selectedTab: selectedTab,
-                document: document,
-                onOpenCanvas: onOpenCanvas
-            )
-        }
-        .navigationSplitViewStyle(.balanced)
-    }
-}
-
-// MARK: - Tab Bar Layout (Portrait/iPhone)
-struct TabBarLayout: View {
-    @Binding var selectedTab: NavigationTab
-    let document: MindMapDocument
-    let onOpenCanvas: () -> Void
-    
-    var body: some View {
-        ZStack {
-            MainContentArea(
-                selectedTab: selectedTab,
-                document: document,
-                onOpenCanvas: onOpenCanvas
-            )
-            
-            VStack {
-                Spacer()
-                FloatingTabBar(selectedTab: $selectedTab)
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 34)
-            }
-        }
-    }
-}
-
-// MARK: - Adaptive MindMap Canvas View
-struct AdaptiveMindMapCanvasView: View {
-    @Bindable var document: MindMapDocument
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @Environment(\.verticalSizeClass) private var verticalSizeClass
-    @Environment(\.dismiss) private var dismiss
-    
-    var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                // Your existing canvas implementation
-                MindMapCanvasView(document: document)
-                
-                // Adaptive Toolbar Overlay
-                VStack {
-                    if shouldShowTopToolbar(for: geometry.size) {
-                        AdaptiveTopToolbar(
-                            document: document,
-                            onBack: { dismiss() }
-                        )
-                        .padding(.top, getSafeAreaTop())
-                    }
-                    
-                    Spacer()
-                    
-                    if shouldShowBottomToolbar(for: geometry.size) {
-                        AdaptiveBottomToolbar(document: document)
-                            .padding(.bottom, getSafeAreaBottom())
-                    }
-                }
-                
-                // Floating Action Button (iPhone Portrait)
-                if shouldShowFloatingActions(for: geometry.size) {
-                    VStack {
-                        Spacer()
-                        HStack {
-                            Spacer()
-                            FloatingActionMenu(document: document)
-                                .padding(.trailing, 20)
-                                .padding(.bottom, 100)
-                        }
-                    }
-                }
-                
-                // Back button for compact layouts
-                if !shouldShowTopToolbar(for: geometry.size) {
-                    VStack {
-                        HStack {
-                            Button(action: { dismiss() }) {
-                                Image(systemName: "chevron.left")
-                                    .font(.title2)
-                                    .foregroundColor(.white)
-                                    .padding(12)
-                                    .background(.ultraThinMaterial, in: Circle())
-                            }
-                            .padding(.leading, 20)
-                            .padding(.top, getSafeAreaTop() + 10)
-                            
-                            Spacer()
-                        }
-                        Spacer()
-                    }
-                }
-            }
-        }
-        .animation(.easeInOut(duration: 0.3), value: horizontalSizeClass)
-    }
-    
-    private func shouldShowTopToolbar(for size: CGSize) -> Bool {
-        return size.width > 768
-    }
-    
-    private func shouldShowBottomToolbar(for size: CGSize) -> Bool {
-        return size.width > 667 || size.width > size.height
-    }
-    
-    private func shouldShowFloatingActions(for size: CGSize) -> Bool {
-        return size.width <= 428 && size.height > size.width
-    }
-    
-    private func getSafeAreaTop() -> CGFloat {
-        #if os(iOS)
-        return UIApplication.shared.connectedScenes
-            .compactMap { $0 as? UIWindowScene }
-            .first?.windows.first?.safeAreaInsets.top ?? 0
-        #else
-        return 0
-        #endif
-    }
-    
-    private func getSafeAreaBottom() -> CGFloat {
-        #if os(iOS)
-        return UIApplication.shared.connectedScenes
-            .compactMap { $0 as? UIWindowScene }
-            .first?.windows.first?.safeAreaInsets.bottom ?? 0
-        #else
-        return 0
-        #endif
-    }
-}
-
-// MARK: - Enhanced MindMap Canvas View (Your existing implementation enhanced)
-struct MindMapCanvasView: View {
-    @Bindable var document: MindMapDocument
-    @State private var dragOffset: CGSize = .zero
-    @State private var isDraggingCanvas = false
-    @State private var isDraggingNode = false
-    @State private var draggedNodeID: UUID?
-    @State private var lastDragOffset: CGSize = .zero
-    
-    var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                // Enhanced dark background with subtle grid
-                EnhancedCanvasBackground()
-                
-                // Connections layer
-                Canvas { context, size in
-                    drawConnections(context: context, canvasSize: size)
-                }
-                
-                // Nodes layer
-                ForEach(document.nodes) { node in
-                    EnhancedNodeView(
-                        node: node,
-                        isSelected: document.selectedNodeIDs.contains(node.id),
-                        onTap: { handleNodeTap(node.id) },
-                        onDragChanged: { value in handleNodeDrag(node.id, value) },
-                        onDragEnded: { _ in handleNodeDragEnd() },
-                        onEdit: { newText in
-                            if let index = document.nodes.firstIndex(where: { $0.id == node.id }) {
-                                document.nodes[index].text = newText
-                            }
-                        }
-                    )
-                    .position(
-                        x: (node.position.x * document.canvasState.zoom) + document.canvasState.panOffset.width + geometry.size.width / 2,
-                        y: (node.position.y * document.canvasState.zoom) + document.canvasState.panOffset.height + geometry.size.height / 2
-                    )
-                    .scaleEffect(document.canvasState.zoom)
-                }
-            }
-        }
-        .clipped()
-        .gesture(
-            SimultaneousGesture(
-                // Pan gesture for canvas
-                DragGesture(minimumDistance: 5)
-                    .onChanged { value in
-                        if !isDraggingNode {
-                            handleCanvasPan(value)
-                        }
-                    }
-                    .onEnded { _ in
-                        document.canvasState.endDrag()
-                        isDraggingCanvas = false
-                    },
-                
-                // Magnification gesture for zoom
-                MagnificationGesture()
-                    .onChanged { value in
-                        document.canvasState.updateZoom(value, at: .zero)
-                    }
-            )
-        )
-        .onTapGesture { location in
-            handleCanvasTap(at: location)
-        }
-        .onKeyPress(.space) {
-            addNodeAtCenter()
-            return .handled
-        }
-        .focusable()
-    }
-    
-    // MARK: - Drawing Functions (Enhanced)
-    
-    private func drawConnections(context: GraphicsContext, canvasSize: CGSize) {
-        for connection in document.connections {
-            guard let fromNode = document.nodes.first(where: { $0.id == connection.fromNodeID }),
-                  let toNode = document.nodes.first(where: { $0.id == connection.toNodeID }) else {
-                continue
-            }
-            
-            // Transform node positions to screen coordinates
-            let fromPoint = transformedPosition(fromNode.centerPoint, canvasSize: canvasSize)
-            let toPoint = transformedPosition(toNode.centerPoint, canvasSize: canvasSize)
-            
-            // Create smooth bezier curve with enhanced styling
-            let controlPoint1 = CGPoint(
-                x: fromPoint.x + (toPoint.x - fromPoint.x) * 0.3,
-                y: fromPoint.y
-            )
-            let controlPoint2 = CGPoint(
-                x: toPoint.x - (toPoint.x - fromPoint.x) * 0.3,
-                y: toPoint.y
-            )
-            
-            var path = Path()
-            path.move(to: fromPoint)
-            path.addCurve(to: toPoint, control1: controlPoint1, control2: controlPoint2)
-            
-            // Enhanced connection styling
-            context.stroke(
-                path,
-                with: .color(connection.style.color.opacity(0.8)),
-                style: StrokeStyle(
-                    lineWidth: connection.style.lineWidth * document.canvasState.zoom,
-                    lineCap: .round,
-                    lineJoin: .round
-                )
-            )
-            
-            // Add subtle glow effect
-            context.stroke(
-                path,
-                with: .color(connection.style.color.opacity(0.3)),
-                style: StrokeStyle(
-                    lineWidth: (connection.style.lineWidth + 2) * document.canvasState.zoom,
-                    lineCap: .round,
-                    lineJoin: .round
-                )
-            )
-        }
-    }
-    
-    private func transformedPosition(_ point: CGPoint, canvasSize: CGSize) -> CGPoint {
-        CGPoint(
-            x: (point.x * document.canvasState.zoom) + document.canvasState.panOffset.width + canvasSize.width / 2,
-            y: (point.y * document.canvasState.zoom) + document.canvasState.panOffset.height + canvasSize.height / 2
-        )
-    }
-    
-    // MARK: - Gesture Handlers (Same as your implementation)
-    
-    private func handleCanvasPan(_ value: DragGesture.Value) {
-        if !isDraggingCanvas {
-            document.canvasState.startDrag()
-            isDraggingCanvas = true
-        }
-        document.canvasState.updateDrag(with: value.translation)
-    }
-    
-    private func handleNodeTap(_ nodeID: UUID) {
-        document.selectNode(nodeID, exclusive: !isMultiSelectActive())
-    }
-    
-    private func handleNodeDrag(_ nodeID: UUID, _ value: DragGesture.Value) {
-        if !isDraggingNode {
-            isDraggingNode = true
-            draggedNodeID = nodeID
-            
-            if !document.selectedNodeIDs.contains(nodeID) {
-                document.selectNode(nodeID, exclusive: !isMultiSelectActive())
-            }
-        }
-        
-        let scaledOffset = CGSize(
-            width: (value.translation.width - lastDragOffset.width) / document.canvasState.zoom,
-            height: (value.translation.height - lastDragOffset.height) / document.canvasState.zoom
-        )
-        document.moveSelectedNodes(by: scaledOffset)
-        lastDragOffset = value.translation
-    }
-    
-    private func handleNodeDragEnd() {
-        isDraggingNode = false
-        draggedNodeID = nil
-        lastDragOffset = .zero
-    }
-    
-    private func handleCanvasTap(at location: CGPoint) {
-        let canvasLocation = CGPoint(
-            x: (location.x - document.canvasState.panOffset.width) / document.canvasState.zoom,
-            y: (location.y - document.canvasState.panOffset.height) / document.canvasState.zoom
-        )
-        
-        let hitNode = document.nodes.first { node in
-            let nodeFrame = CGRect(
-                origin: CGPoint(
-                    x: node.position.x - node.size.width / 2,
-                    y: node.position.y - node.size.height / 2
-                ),
-                size: node.size
-            )
-            return nodeFrame.contains(canvasLocation)
-        }
-        
-        if hitNode == nil {
-            document.clearSelection()
-        }
+        // Always show sidebar on Mac Catalyst, or iPad landscape
+        return isMacCatalyst || (size.width > 768 && size.height < size.width * 1.2)
     }
     
     private func addNodeAtCenter() {
         let centerPoint = CGPoint(x: 0, y: 0)
         document.addNode(text: "New Node", at: centerPoint)
     }
-    
-    private func isMultiSelectActive() -> Bool {
-        return false // Simplified for now
-    }
 }
 
-// MARK: - Enhanced Node View
-struct EnhancedNodeView: View {
-    let node: MindMapNode
-    let isSelected: Bool
-    let onTap: () -> Void
-    let onDragChanged: (DragGesture.Value) -> Void
-    let onDragEnded: (DragGesture.Value) -> Void
-    let onEdit: (String) -> Void
-    
-    @State private var isEditing = false
-    @State private var editText = ""
-    @State private var isHovered = false
-    
-    var body: some View {
-        Group {
-            if isEditing {
-                TextField("Node text", text: $editText)
-                    .textFieldStyle(.roundedBorder)
-                    .frame(minWidth: 100)
-                    .onSubmit {
-                        onEdit(editText)
-                        isEditing = false
-                    }
-                    .onAppear {
-                        editText = node.text
-                    }
-            } else {
-                Text(node.text)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
-                    .foregroundColor(node.style.textColor)
-                    .font(.system(.body, design: .rounded, weight: .medium))
-                    .multilineTextAlignment(.center)
-            }
-        }
-        .frame(minWidth: 80, minHeight: 40)
-        .background(
-            RoundedRectangle(cornerRadius: node.style.cornerRadius)
-                .fill(
-                    isSelected ?
-                    node.style.backgroundColor.opacity(0.9) :
-                    node.style.backgroundColor.opacity(isHovered ? 0.8 : 0.7)
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: node.style.cornerRadius)
-                        .stroke(
-                            isSelected ? Color.blue : node.style.borderColor.opacity(0.5),
-                            lineWidth: isSelected ? 3 : node.style.borderWidth
-                        )
-                )
-                .shadow(
-                    color: isSelected ? .blue.opacity(0.4) : .black.opacity(0.3),
-                    radius: isSelected ? 12 : (isHovered ? 8 : 4),
-                    x: 0,
-                    y: isSelected ? 4 : 2
-                )
-        )
-        .scaleEffect(isSelected ? 1.05 : (isHovered ? 1.02 : 1.0))
-        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isSelected)
-        .animation(.easeInOut(duration: 0.2), value: isHovered)
-        .onTapGesture(count: 2) {
-            isEditing = true
-        }
-        .onTapGesture {
-            onTap()
-        }
-        .onHover { hovering in
-            isHovered = hovering
-        }
-        .gesture(
-            DragGesture()
-                .onChanged(onDragChanged)
-                .onEnded(onDragEnded)
-        )
-    }
-}
-
-// MARK: - Enhanced Canvas Background
-struct EnhancedCanvasBackground: View {
-    var body: some View {
-        ZStack {
-            // Deep dark background with subtle gradient
-            LinearGradient(
-                colors: [
-                    Color.black,
-                    Color.black.opacity(0.95)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            
-            // Enhanced grid pattern
-            Canvas { context, size in
-                let gridSize: CGFloat = 50
-                let smallGridSize: CGFloat = 10
-                
-                // Small grid (subtle)
-                context.stroke(
-                    Path { path in
-                        for x in stride(from: 0, through: size.width, by: smallGridSize) {
-                            path.move(to: CGPoint(x: x, y: 0))
-                            path.addLine(to: CGPoint(x: x, y: size.height))
-                        }
-                        for y in stride(from: 0, through: size.height, by: smallGridSize) {
-                            path.move(to: CGPoint(x: 0, y: y))
-                            path.addLine(to: CGPoint(x: size.width, y: y))
-                        }
-                    },
-                    with: .color(.white.opacity(0.02)),
-                    lineWidth: 0.5
-                )
-                
-                // Major grid (slightly more visible)
-                context.stroke(
-                    Path { path in
-                        for x in stride(from: 0, through: size.width, by: gridSize) {
-                            path.move(to: CGPoint(x: x, y: 0))
-                            path.addLine(to: CGPoint(x: x, y: size.height))
-                        }
-                        for y in stride(from: 0, through: size.height, by: gridSize) {
-                            path.move(to: CGPoint(x: 0, y: y))
-                            path.addLine(to: CGPoint(x: size.width, y: y))
-                        }
-                    },
-                    with: .color(.white.opacity(0.06)),
-                    lineWidth: 0.8
-                )
-            }
-        }
-    }
-}
-
-// MARK: - Navigation Types (from previous implementation)
-enum NavigationTab: String, CaseIterable, Identifiable {
-    case mindmaps = "mindmaps"
-    case templates = "templates"
-    case recent = "recent"
-    case settings = "settings"
-    
-    var id: String { rawValue }
-    
-    var title: String {
-        switch self {
-        case .mindmaps: return "Mind Maps"
-        case .templates: return "Templates"
-        case .recent: return "Recent"
-        case .settings: return "Settings"
-        }
-    }
-    
-    var icon: String {
-        switch self {
-        case .mindmaps: return "brain.head.profile"
-        case .templates: return "doc.on.doc"
-        case .recent: return "clock"
-        case .settings: return "gear"
-        }
-    }
-}
-
-// MARK: - Main Content Area
-struct MainContentArea: View {
-    let selectedTab: NavigationTab
-    let document: MindMapDocument
-    let onOpenCanvas: () -> Void
-    
-    var body: some View {
-        Group {
-            switch selectedTab {
-            case .mindmaps:
-                CurrentMindMapView(document: document, onOpenCanvas: onOpenCanvas)
-            case .templates:
-                TemplatesView()
-            case .recent:
-                RecentMindMapsView()
-            case .settings:
-                SettingsView()
-            }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.systemBackground)
-    }
-}
-
-// MARK: - Current Mind Map View
-struct CurrentMindMapView: View {
+// MARK: - Document Browser View
+struct DocumentBrowserView: View {
     let document: MindMapDocument
     let onOpenCanvas: () -> Void
     
@@ -593,27 +105,24 @@ struct CurrentMindMapView: View {
             // Header
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
-                    Text(document.title.isEmpty ? "Untitled Mind Map" : document.title)
+                    Text(document.title)
                         .font(.largeTitle)
                         .fontWeight(.bold)
                     
                     Spacer()
-                    
-                    Button("Edit Title") {
-                        // Edit title functionality
-                    }
-                    .buttonStyle(.bordered)
                 }
                 
                 HStack {
                     Text("\(document.nodes.count) nodes")
                         .foregroundColor(.secondary)
                     
-                    Spacer()
-                    
-                    Text("Last modified \(Date(), style: .relative)")
+                    Text("•")
                         .foregroundColor(.secondary)
-                        .font(.caption)
+                    
+                    Text("\(document.connections.count) connections")
+                        .foregroundColor(.secondary)
+                    
+                    Spacer()
                 }
             }
             .padding(.horizontal, 20)
@@ -627,15 +136,7 @@ struct CurrentMindMapView: View {
             
             Spacer()
         }
-        .navigationTitle("Current Mind Map")
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Open Canvas") {
-                    onOpenCanvas()
-                }
-                .buttonStyle(.borderedProminent)
-            }
-        }
+        .navigationTitle("Mind Map")
     }
 }
 
@@ -730,24 +231,11 @@ struct MiniCanvasPreview: View {
             context.fill(Path(CGRect(origin: .zero, size: size)), with: .color(.black))
             
             // Scale down and center the preview
-            let scale: CGFloat = 0.1
+            let scale: CGFloat = 0.5
             let centerX = size.width / 2
             let centerY = size.height / 2
             
-            // Draw simplified nodes
-            for (index, node) in document.nodes.enumerated() {
-                let x = centerX + (node.position.x * scale)
-                let y = centerY + (node.position.y * scale)
-                
-                // Draw node as small circle
-                let nodeRect = CGRect(x: x - 4, y: y - 4, width: 8, height: 8)
-                context.fill(
-                    Path(ellipseIn: nodeRect),
-                    with: .color(node.style.backgroundColor.opacity(0.8))
-                )
-            }
-            
-            // Draw connections
+            // Draw connections first
             for connection in document.connections {
                 guard let fromNode = document.nodes.first(where: { $0.id == connection.fromNodeID }),
                       let toNode = document.nodes.first(where: { $0.id == connection.toNodeID }) else {
@@ -770,9 +258,494 @@ struct MiniCanvasPreview: View {
                 context.stroke(
                     path,
                     with: .color(connection.style.color.opacity(0.6)),
+                    lineWidth: 2
+                )
+            }
+            
+            // Draw simplified nodes
+            for node in document.nodes {
+                let x = centerX + (node.position.x * scale)
+                let y = centerY + (node.position.y * scale)
+                
+                // Draw node as rounded rectangle
+                let nodeRect = CGRect(x: x - 30, y: y - 15, width: 60, height: 30)
+                let roundedRect = Path(roundedRect: nodeRect, cornerRadius: 8)
+                
+                context.fill(
+                    roundedRect,
+                    with: .color(node.style.backgroundColor.opacity(0.8))
+                )
+                
+                context.stroke(
+                    roundedRect,
+                    with: .color(node.style.borderColor.opacity(0.6)),
                     lineWidth: 1
                 )
             }
+        }
+    }
+}
+
+// MARK: - Main Canvas View
+struct MindMapCanvasView: View {
+    @Bindable var document: MindMapDocument
+    @State private var isDraggingCanvas = false
+    @State private var isDraggingNode = false
+    @State private var draggedNodeID: UUID?
+    @State private var lastDragOffset: CGSize = .zero
+    
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack {
+                // Enhanced dark background with subtle grid
+                CanvasBackground()
+                
+                // Connections layer
+                Canvas { context, size in
+                    for connection in document.connections {
+                        guard let fromNode = document.nodes.first(where: { $0.id == connection.fromNodeID }),
+                              let toNode = document.nodes.first(where: { $0.id == connection.toNodeID }) else {
+                            continue
+                        }
+                        
+                        // Transform node positions to screen coordinates
+                        let fromPoint = CGPoint(
+                            x: (fromNode.centerPoint.x * document.canvasState.zoom) + document.canvasState.panOffset.width + size.width / 2,
+                            y: (fromNode.centerPoint.y * document.canvasState.zoom) + document.canvasState.panOffset.height + size.height / 2
+                        )
+                        let toPoint = CGPoint(
+                            x: (toNode.centerPoint.x * document.canvasState.zoom) + document.canvasState.panOffset.width + size.width / 2,
+                            y: (toNode.centerPoint.y * document.canvasState.zoom) + document.canvasState.panOffset.height + size.height / 2
+                        )
+                        
+                        // Create smooth bezier curve
+                        let controlPoint1 = CGPoint(
+                            x: fromPoint.x + (toPoint.x - fromPoint.x) * 0.3,
+                            y: fromPoint.y
+                        )
+                        let controlPoint2 = CGPoint(
+                            x: toPoint.x - (toPoint.x - fromPoint.x) * 0.3,
+                            y: toPoint.y
+                        )
+                        
+                        var path = Path()
+                        path.move(to: fromPoint)
+                        path.addCurve(to: toPoint, control1: controlPoint1, control2: controlPoint2)
+                        
+                        // Enhanced connection styling
+                        context.stroke(
+                            path,
+                            with: .color(connection.style.color.opacity(0.8)),
+                            style: StrokeStyle(
+                                lineWidth: connection.style.lineWidth * document.canvasState.zoom,
+                                lineCap: .round,
+                                lineJoin: .round
+                            )
+                        )
+                    }
+                }
+                
+                // Nodes layer
+                ForEach(document.nodes) { node in
+                    NodeView(
+                        node: node,
+                        isSelected: document.selectedNodeIDs.contains(node.id),
+                        onTap: {
+                            document.selectNode(node.id, exclusive: true)
+                        },
+                        onDragChanged: { value in
+                            if !isDraggingNode {
+                                isDraggingNode = true
+                                draggedNodeID = node.id
+                                
+                                if !document.selectedNodeIDs.contains(node.id) {
+                                    document.selectNode(node.id, exclusive: true)
+                                }
+                            }
+                            
+                            let scaledOffset = CGSize(
+                                width: (value.translation.width - lastDragOffset.width) / document.canvasState.zoom,
+                                height: (value.translation.height - lastDragOffset.height) / document.canvasState.zoom
+                            )
+                            document.moveSelectedNodes(by: scaledOffset)
+                            lastDragOffset = value.translation
+                        },
+                        onDragEnded: { _ in
+                            isDraggingNode = false
+                            draggedNodeID = nil
+                            lastDragOffset = .zero
+                        },
+                        onEdit: { newText in
+                            if let index = document.nodes.firstIndex(where: { $0.id == node.id }) {
+                                document.nodes[index].text = newText
+                            }
+                        }
+                    )
+                    .position(
+                        x: (node.position.x * document.canvasState.zoom) + document.canvasState.panOffset.width + geometry.size.width / 2,
+                        y: (node.position.y * document.canvasState.zoom) + document.canvasState.panOffset.height + geometry.size.height / 2
+                    )
+                    .scaleEffect(document.canvasState.zoom)
+                }
+            }
+            .clipped()
+            .gesture(
+                SimultaneousGesture(
+                    // Pan gesture for canvas
+                    DragGesture(minimumDistance: 5)
+                        .onChanged { value in
+                            if !isDraggingNode {
+                                if !isDraggingCanvas {
+                                    document.canvasState.startDrag()
+                                    isDraggingCanvas = true
+                                }
+                                document.canvasState.updateDrag(with: value.translation)
+                            }
+                        }
+                        .onEnded { _ in
+                            document.canvasState.endDrag()
+                            isDraggingCanvas = false
+                        },
+                    
+                    // Magnification gesture for zoom
+                    MagnificationGesture()
+                        .onChanged { value in
+                            document.canvasState.updateZoom(value, at: .zero)
+                        }
+                )
+            )
+            .onTapGesture { location in
+                let canvasLocation = CGPoint(
+                    x: (location.x - geometry.size.width / 2 - document.canvasState.panOffset.width) / document.canvasState.zoom,
+                    y: (location.y - geometry.size.height / 2 - document.canvasState.panOffset.height) / document.canvasState.zoom
+                )
+                
+                let hitNode = document.nodes.first { node in
+                    let nodeFrame = CGRect(
+                        origin: CGPoint(
+                            x: node.position.x - node.size.width / 2,
+                            y: node.position.y - node.size.height / 2
+                        ),
+                        size: node.size
+                    )
+                    return nodeFrame.contains(canvasLocation)
+                }
+                
+                if hitNode == nil {
+                    document.clearSelection()
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Node View
+struct NodeView: View {
+    let node: MindMapNode
+    let isSelected: Bool
+    let onTap: () -> Void
+    let onDragChanged: (DragGesture.Value) -> Void
+    let onDragEnded: (DragGesture.Value) -> Void
+    let onEdit: (String) -> Void
+    
+    @State private var isEditing = false
+    @State private var editText = ""
+    @State private var isHovered = false
+    
+    var body: some View {
+        Group {
+            if isEditing {
+                TextField("Node text", text: $editText)
+                    .textFieldStyle(.roundedBorder)
+                    .frame(minWidth: 100)
+                    .onSubmit {
+                        onEdit(editText)
+                        isEditing = false
+                    }
+                    .onAppear {
+                        editText = node.text
+                    }
+            } else {
+                Text(node.text)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 12)
+                    .foregroundColor(node.style.textColor)
+                    .font(.system(.body, design: .rounded, weight: .medium))
+                    .multilineTextAlignment(.center)
+            }
+        }
+        .frame(minWidth: 80, minHeight: 40)
+        .background(
+            RoundedRectangle(cornerRadius: node.style.cornerRadius)
+                .fill(
+                    isSelected ?
+                    node.style.backgroundColor.opacity(0.9) :
+                    node.style.backgroundColor.opacity(isHovered ? 0.8 : 0.7)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: node.style.cornerRadius)
+                        .stroke(
+                            isSelected ? Color.blue : node.style.borderColor.opacity(0.5),
+                            lineWidth: isSelected ? 3 : node.style.borderWidth
+                        )
+                )
+                .shadow(
+                    color: isSelected ? .blue.opacity(0.4) : .black.opacity(0.3),
+                    radius: isSelected ? 12 : (isHovered ? 8 : 4),
+                    x: 0,
+                    y: isSelected ? 4 : 2
+                )
+        )
+        .scaleEffect(isSelected ? 1.05 : (isHovered ? 1.02 : 1.0))
+        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isSelected)
+        .animation(.easeInOut(duration: 0.2), value: isHovered)
+        .onTapGesture(count: 2) {
+            isEditing = true
+        }
+        .onTapGesture {
+            onTap()
+        }
+        .onHover { hovering in
+            isHovered = hovering
+        }
+        .gesture(
+            DragGesture()
+                .onChanged(onDragChanged)
+                .onEnded(onDragEnded)
+        )
+    }
+}
+
+// MARK: - Canvas Background
+struct CanvasBackground: View {
+    var body: some View {
+        ZStack {
+            // Deep dark background
+            Color.black
+            
+            // Grid pattern
+            Canvas { context, size in
+                let gridSize: CGFloat = 50
+                
+                context.stroke(
+                    Path { path in
+                        for x in stride(from: 0, through: size.width, by: gridSize) {
+                            path.move(to: CGPoint(x: x, y: 0))
+                            path.addLine(to: CGPoint(x: x, y: size.height))
+                        }
+                        for y in stride(from: 0, through: size.height, by: gridSize) {
+                            path.move(to: CGPoint(x: 0, y: y))
+                            path.addLine(to: CGPoint(x: size.width, y: y))
+                        }
+                    },
+                    with: .color(.white.opacity(0.05)),
+                    lineWidth: 0.5
+                )
+            }
+        }
+    }
+}
+
+// MARK: - Mac Catalyst Toolbar
+struct MacCatalystToolbar: View {
+    @Bindable var document: MindMapDocument
+    @State private var showingSettings = false
+    
+    var body: some View {
+        HStack {
+            // Document info
+            HStack(spacing: 12) {
+                Text(document.title.isEmpty ? "Untitled Mind Map" : document.title)
+                    .font(.headline)
+                    .foregroundColor(.white)
+                
+                Spacer()
+                
+                Text("\(document.nodes.count) nodes, \(document.selectedNodeIDs.count) selected")
+                    .font(.caption)
+                    .foregroundColor(.white.opacity(0.7))
+            }
+            
+            Spacer()
+            
+            // Mac-style controls
+            HStack(spacing: 12) {
+                // Zoom controls
+                HStack(spacing: 4) {
+                    Button("−") {
+                        document.canvasState.zoom = max(0.1, document.canvasState.zoom - 0.2)
+                    }
+                    .buttonStyle(MacZoomButtonStyle())
+                    
+                    Text("\(Int(document.canvasState.zoom * 100))%")
+                        .font(.caption)
+                        .foregroundColor(.white.opacity(0.8))
+                        .frame(width: 40)
+                    
+                    Button("+") {
+                        document.canvasState.zoom = min(3.0, document.canvasState.zoom + 0.2)
+                    }
+                    .buttonStyle(MacZoomButtonStyle())
+                }
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 6))
+                
+                // Fit to screen
+                Button(action: fitToScreen) {
+                    Image(systemName: "arrow.up.left.and.arrow.down.right")
+                        .font(.body)
+                }
+                .buttonStyle(MacToolButtonStyle())
+                
+                // Settings
+                Button(action: { showingSettings = true }) {
+                    Image(systemName: "gear")
+                        .font(.body)
+                }
+                .buttonStyle(MacToolButtonStyle())
+            }
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 8)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 8))
+        .padding(.horizontal, 20)
+        .sheet(isPresented: $showingSettings) {
+            MacDocumentSettingsSheet(document: document)
+        }
+    }
+    
+    private func fitToScreen() {
+        withAnimation(.easeInOut(duration: 0.5)) {
+            document.canvasState.zoom = 1.0
+            document.canvasState.panOffset = .zero
+        }
+    }
+}
+
+// MARK: - Mac Catalyst Sidebar
+struct MacCatalystSidebar: View {
+    let onOpenCanvas: () -> Void
+    
+    var body: some View {
+        List {
+            Section("MindMap") {
+                Button(action: onOpenCanvas) {
+                    Label("Current Document", systemImage: "brain.head.profile")
+                }
+                
+                NavigationLink(destination: Text("Templates Coming Soon")) {
+                    Label("Templates", systemImage: "doc.on.doc")
+                }
+                
+                NavigationLink(destination: Text("Recent Coming Soon")) {
+                    Label("Recent", systemImage: "clock")
+                }
+            }
+            
+            Section("Tools") {
+                Button(action: onOpenCanvas) {
+                    Label("Open Canvas", systemImage: "pencil.and.scribble")
+                }
+                
+                Button("New Document") {
+                    // New document action - placeholder
+                }
+            }
+        }
+        .listStyle(SidebarListStyle())
+        .navigationTitle("MindMap")
+    }
+}
+
+// MARK: - Mac-specific Button Styles
+struct MacToolButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .foregroundColor(.white)
+            .padding(6)
+            .background(
+                RoundedRectangle(cornerRadius: 4)
+                    .fill(.white.opacity(configuration.isPressed ? 0.3 : 0.1))
+            )
+            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
+    }
+}
+
+struct MacZoomButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.caption)
+            .fontWeight(.medium)
+            .foregroundColor(.white)
+            .frame(width: 24, height: 24)
+            .background(
+                RoundedRectangle(cornerRadius: 4)
+                    .fill(.white.opacity(configuration.isPressed ? 0.3 : 0.1))
+            )
+            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
+    }
+}
+
+// MARK: - Mac-optimized Document Settings
+struct MacDocumentSettingsSheet: View {
+    @Bindable var document: MindMapDocument
+    @Environment(\.dismiss) private var dismiss
+    @State private var editableTitle: String = ""
+    
+    var body: some View {
+        NavigationView {
+            Form {
+                Section("Document") {
+                    TextField("Title", text: $editableTitle)
+                        .textFieldStyle(.roundedBorder)
+                }
+                
+                Section("Canvas Settings") {
+                    Toggle("Show Grid", isOn: .constant(true))
+                        .disabled(true)
+                    Toggle("Snap to Grid", isOn: .constant(false))
+                        .disabled(true)
+                }
+                
+                Section("Statistics") {
+                    HStack {
+                        Text("Nodes")
+                        Spacer()
+                        Text("\(document.nodes.count)")
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    HStack {
+                        Text("Connections")
+                        Spacer()
+                        Text("\(document.connections.count)")
+                            .foregroundColor(.secondary)
+                    }
+                }
+            }
+            .navigationTitle("Document Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Save") {
+                        document.title = editableTitle
+                        dismiss()
+                    }
+                }
+            }
+        }
+        .frame(minWidth: 500, minHeight: 400)
+        .onAppear {
+            editableTitle = document.title
         }
     }
 }

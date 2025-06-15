@@ -4,13 +4,12 @@
 //
 //  Created by Tyler Allen on 6/14/25.
 //
-
 import SwiftUI
 
 @main
 struct MindMapApp: App {
     var body: some Scene {
-        DocumentGroup(newDocument: { MindMapDocument() }) { file in
+        DocumentGroup(newDocument: MindMapDocument.init) { file in
             ContentView(document: file.document)
         }
     }

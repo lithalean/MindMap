@@ -15,13 +15,14 @@ class MindMapDocument: ReferenceFileDocument {
     var connections: [NodeConnection] = []
     var canvasState = CanvasState()
     var selectedNodeIDs: Set<UUID> = []
+    var title: String = "Untitled Mind Map"
     
     // Required initializer for new documents
     required init() {
         // Add some sample data so you can see it working
-        let centerNode = addNode(text: "Core Idea", at: CGPoint(x: 400, y: 300))
-        let featureA = addNode(text: "Feature A", at: CGPoint(x: 600, y: 200))
-        let featureB = addNode(text: "Feature B", at: CGPoint(x: 600, y: 400))
+        let centerNode = addNode(text: "Core Idea", at: CGPoint(x: 0, y: 0))
+        let featureA = addNode(text: "Feature A", at: CGPoint(x: 200, y: -100))
+        let featureB = addNode(text: "Feature B", at: CGPoint(x: 200, y: 100))
         
         connectNodes(from: centerNode.id, to: featureA.id)
         connectNodes(from: centerNode.id, to: featureB.id)
@@ -34,12 +35,13 @@ class MindMapDocument: ReferenceFileDocument {
             let documentData = try decoder.decode(DocumentData.self, from: data)
             self.nodes = documentData.nodes
             self.connections = documentData.connections
+            self.title = documentData.title ?? "Untitled Mind Map"
         }
     }
     
     // Required for saving documents
     func snapshot(contentType: UTType) throws -> DocumentData {
-        DocumentData(nodes: nodes, connections: connections)
+        DocumentData(nodes: nodes, connections: connections, title: title)
     }
     
     // Required for writing documents
@@ -52,6 +54,7 @@ class MindMapDocument: ReferenceFileDocument {
     
     // MARK: - Node Management
     
+    @discardableResult
     func addNode(text: String, at position: CGPoint) -> MindMapNode {
         let node = MindMapNode(text: text, position: position)
         nodes.append(node)
@@ -92,6 +95,10 @@ class MindMapDocument: ReferenceFileDocument {
         selectedNodeIDs.removeAll()
     }
     
+    func selectAllNodes() {
+        selectedNodeIDs = Set(nodes.map { $0.id })
+    }
+    
     // MARK: - Canvas Operations
     
     func moveSelectedNodes(by offset: CGSize) {
@@ -108,6 +115,7 @@ class MindMapDocument: ReferenceFileDocument {
 struct DocumentData: Codable {
     let nodes: [MindMapNode]
     let connections: [NodeConnection]
+    let title: String?
 }
 
 @Observable
