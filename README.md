@@ -119,15 +119,6 @@ MindMap is the first component of the **DarwinCodex** suite - a collection of pr
 - Undo/redo implementation
 - Grid and snapping features
 
-## DarwinCodex Suite
-
-MindMap is part of the larger **DarwinCodex** project - a unified productivity suite for developers:
-
-1. **MindMap** (this project) - Visual thinking and architecture planning
-2. **CodeSnippets** (planned) - Swift/C++ code fragment management
-3. **DevNotes** (planned) - Markdown-based documentation system
-4. **DarwinCodex** (planned) - Unified interface combining all tools
-
 ## Technical Requirements
 
 - **iOS/iPadOS:** 18.0+
