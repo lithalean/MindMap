@@ -18,17 +18,20 @@ MindMap is the first component of the **DarwinCodex** suite - a collection of pr
 - Bezier curve connections between nodes
 - Dark mode optimized with subtle grid background
 - Professional shadows and animations
+- Adaptive interface following WWDC25 iPadOS design principles
 
 ### 🧠 **Developer-Focused Design**
 - Clean, modern interface built for technical workflows
 - Keyboard shortcuts for rapid node creation
 - Multi-select and drag operations
 - Double-tap to edit node content
+- Context-aware toolbars that adapt to selection state
 
 ### 💾 **Document Management**
 - Document-based app architecture
 - Automatic save/restore functionality
 - JSON-based file format for portability
+- Document browser with live previews
 - iCloud sync support (planned)
 
 ### 🔧 **Modern Architecture**
@@ -36,6 +39,7 @@ MindMap is the first component of the **DarwinCodex** suite - a collection of pr
 - `@Observable` state management
 - `ReferenceFileDocument` for proper document handling
 - Cross-platform support (iPhone, iPad, Mac Catalyst)
+- Adaptive interface that scales from iPhone to macOS
 
 ## Roadmap
 
@@ -47,42 +51,73 @@ MindMap is the first component of the **DarwinCodex** suite - a collection of pr
 - [x] Node connections with bezier curves
 - [x] Cross-platform deployment
 
-### Phase 2: Enhanced Visual Experience 🚧
-- [ ] Improved node styling and themes
+### Phase 2: Enhanced Visual Experience ✅
+- [x] **WWDC25 Adaptive Interface**: Sidebar for iPad/macOS, floating tab bar for portrait, responsive design
+- [x] **Material Design System**: Consistent use of `.ultraThinMaterial` and proper shadow hierarchy
+- [x] **Enhanced Node Styling**: Improved hover states, selection feedback, and visual hierarchy
+- [x] **Context-Aware Toolbars**: Different toolbars for selection vs. general editing modes
+- [x] **Document Browser**: Grid view with live canvas previews and template support
+- [x] **Floating Action Menu**: iPhone-optimized expandable FAB with secondary actions
 - [ ] Connection arrows and labels
 - [ ] Node shapes (rectangles, circles, diamonds)
 - [ ] Color coding and visual hierarchy
-- [ ] Smooth animations and transitions
 - [ ] Grid snapping and alignment tools
 
-### Phase 3: Developer Productivity Features 🔮
-- [ ] Code syntax highlighting in nodes
-- [ ] Integration with GitHub Issues/PRs
-- [ ] Link to Linear tickets
-- [ ] Markdown support in node content
-- [ ] Export to various formats (PNG, SVG, PDF)
-- [ ] Template library for common architectures
+### Phase 3: Advanced Canvas Features 🚧
+- [ ] **Enhanced Connection System**: Directional arrows, connection labels, multiple connection types
+- [ ] **Node Shape Library**: Rectangles, circles, diamonds, custom shapes
+- [ ] **Advanced Selection**: Multi-select with Command+click, selection rectangles
+- [ ] **Undo/Redo System**: Full command pattern implementation
+- [ ] **Grid and Snapping**: Toggle grid visibility, snap-to-grid functionality
+- [ ] **Zoom and Navigation**: Minimap, fit-to-screen, zoom to selection
+- [ ] **Node Styling Panel**: Color picker, font options, border styles
 
-### Phase 4: Collaboration & Sync 🌐
-- [ ] iCloud document sync
-- [ ] Real-time collaboration
-- [ ] Version history
-- [ ] Comment and annotation system
-- [ ] Share via link functionality
+### Phase 4: Developer Productivity Features 🔮
+- [ ] **Rich Text Support**: Markdown rendering in nodes, text formatting options
+- [ ] **Code Syntax Highlighting**: Language-specific highlighting for code blocks in nodes
+- [ ] **External Integrations**: GitHub Issues/PRs, Linear tickets, Jira cards
+- [ ] **Template System**: Pre-built templates for system architecture, user flows, project planning
+- [ ] **Export System**: PNG, SVG, PDF export with high-quality rendering
+- [ ] **Search and Filter**: Full-text search across nodes, filter by tags or types
 
-### Phase 5: Advanced Features 🚀
-- [ ] AI-powered node suggestions
-- [ ] Auto-layout algorithms
-- [ ] Plugin system for extensions
-- [ ] Integration with other DarwinCodex tools
-- [ ] Advanced search and filtering
-- [ ] Presentation mode
+### Phase 5: Collaboration & Sync 🌐
+- [ ] **iCloud Document Sync**: Seamless sync across devices
+- [ ] **Real-time Collaboration**: Multiple users editing simultaneously
+- [ ] **Version History**: Document versioning with restore capability
+- [ ] **Comment System**: Annotations and discussion threads on nodes
+- [ ] **Share Links**: Public sharing with view/edit permissions
+- [ ] **Team Workspaces**: Shared spaces for collaborative projects
 
-### Phase 6: DarwinCodex Integration 🔗
-- [ ] Unified interface with CodeSnippets
-- [ ] Cross-linking with DevNotes
-- [ ] Shared data models and sync
-- [ ] Workflow automation between tools
+### Phase 6: Advanced Features 🚀
+- [ ] **AI-Powered Assistance**: Node suggestions, auto-layout, content generation
+- [ ] **Auto-Layout Algorithms**: Force-directed, hierarchical, circular layouts
+- [ ] **Plugin Architecture**: Third-party extensions and integrations
+- [ ] **Advanced Search**: Semantic search, graph queries, relationship mapping
+- [ ] **Presentation Mode**: Full-screen presentation with navigation
+- [ ] **Performance Optimization**: Large document handling, virtualization
+
+### Phase 7: DarwinCodex Integration 🔗
+- [ ] **Unified Suite Interface**: Common navigation and design language
+- [ ] **Cross-App Linking**: Link mind maps to code snippets and documentation
+- [ ] **Shared Data Models**: Common entities across all DarwinCodex tools
+- [ ] **Workflow Automation**: Automated workflows between tools
+- [ ] **Universal Search**: Search across all DarwinCodex applications
+
+## Current Implementation Status
+
+### ✅ **Completed (Phase 2)**
+- **Adaptive Interface System**: Complete responsive design following WWDC25 principles
+- **Document Browser**: Grid layout with live previews and template cards
+- **Enhanced Canvas**: Improved visual hierarchy with professional shadows and materials
+- **Context-Aware Toolbars**: Selection-specific vs. general editing toolbars
+- **Cross-Platform Support**: Single codebase scaling from iPhone to macOS
+- **Material Design**: Consistent floating elements with proper elevation
+
+### 🚧 **In Progress (Phase 3)**
+- Connection system enhancements
+- Advanced node shapes and styling
+- Undo/redo implementation
+- Grid and snapping features
 
 ## DarwinCodex Suite
 
@@ -107,12 +142,22 @@ MindMap is part of the larger **DarwinCodex** project - a unified productivity s
 - `ReferenceFileDocument` for document handling
 - `Canvas` for high-performance drawing
 - Gesture recognition for intuitive interactions
+- Adaptive interface components following WWDC25 design principles
 
 ### Key Components
-- **MindMapDocument**: Core observable data model
-- **MindMapCanvasView**: Infinite canvas implementation
-- **NodeView**: Individual node rendering and interaction
-- **CanvasState**: Pan, zoom, and viewport management
+- **ContentView**: Adaptive container that switches between sidebar and tab layouts
+- **MindMapDocument**: Core observable data model with connection support
+- **AdaptiveMindMapCanvasView**: Full-screen canvas with context-aware toolbars
+- **FloatingSidebar**: Material-based navigation for larger screens
+- **FloatingTabBar**: Bottom navigation for compact layouts
+- **DocumentBrowser**: Grid-based document management with live previews
+
+### Design System
+- **Material Hierarchy**: Consistent use of `.ultraThinMaterial` and `.regularMaterial`
+- **Shadow System**: Proper elevation with context-appropriate shadows
+- **Animation Framework**: Spring-based animations with 0.3s easeInOut timing
+- **Responsive Breakpoints**: 768px width threshold for layout switching
+- **Color Scheme**: Dark-mode optimized with accent color highlights
 
 ## Installation
 
@@ -132,22 +177,25 @@ Build and run for your desired platform (iPhone, iPad, or Mac).
 ## Usage
 
 ### Basic Operations
-- **Create Node**: Press Space bar or double-tap empty canvas
+- **Create Node**: Press Space bar, double-tap empty canvas, or use floating action button
 - **Edit Node**: Double-tap existing node
 - **Move Nodes**: Drag nodes around the canvas
 - **Pan Canvas**: Drag on empty canvas area
-- **Zoom**: Pinch gesture or scroll wheel
-- **Select Multiple**: Command+click (planned)
+- **Zoom**: Pinch gesture, scroll wheel, or toolbar zoom controls
+- **Select Multiple**: Tap multiple nodes (multi-select with modifiers planned)
+
+### Adaptive Interface
+- **iPad Landscape/macOS**: Persistent sidebar with document browser
+- **iPad Portrait/iPhone Landscape**: Floating bottom toolbar
+- **iPhone Portrait**: Floating action menu with expandable secondary actions
 
 ### Keyboard Shortcuts
 - `Space`: Create new node at center
 - `Cmd+N`: New document
 - `Cmd+S`: Save document
 - `Cmd+Z`: Undo (planned)
+- `Cmd+A`: Select all nodes
 
-## Contributing
-
-We welcome contributions to MindMap! Please see our contributing guidelines and feel free to submit issues or pull requests.
 
 ### Development Setup
 1. Clone the repository
@@ -155,25 +203,26 @@ We welcome contributions to MindMap! Please see our contributing guidelines and 
 3. Ensure iOS 18+ deployment target
 4. Build and run
 
-### Areas for Contribution
-- UI/UX improvements
-- Performance optimizations
-- New node types and shapes
+### Current Focus Areas
+- Connection system improvements (arrows, labels)
+- Node shape library implementation
+- Undo/redo system development
 - Export functionality
-- Documentation and examples
+- Performance optimizations for large documents
+
+### Future Contribution Areas
+- AI integration features
+- Plugin architecture
+- Collaboration features
+- Advanced layout algorithms
 
 ## License
 
-MindMap is released under the MIT License. See [LICENSE](LICENSE) for details.
+MindMap is released under the MIT License. 
 
 ## Acknowledgments
 
 - Inspired by tools like Freeform, XMind, and MindNode
 - Built with modern SwiftUI and iOS 18+ technologies
+- Following WWDC25 iPadOS design principles
 - Part of the broader vision for developer productivity tools
-
----
-
-**Part of the DarwinCodex Suite** | [DarwinHost](https://github.com/lithalean/DarwinHost) | [Other Projects](https://github.com/lithalean)
-
-*Building the future of developer productivity, one tool at a time.*
